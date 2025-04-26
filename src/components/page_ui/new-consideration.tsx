@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -136,15 +136,14 @@ export default function NewConsideration() {
   const handleChange = (
     category: keyof ConsiderationFormData,
     field: string,
-    value: any
+    value: string | number | boolean | Rating
   ) => {
     setFormData({
       ...formData,
       [category]: {
-        ...(formData[category as keyof ConsiderationFormData] as Record<
-          string,
-          string | number | boolean | Rating
-        >),
+        ...(formData[
+          category as keyof ConsiderationFormData
+        ] as unknown as Record<string, string | number | boolean | Rating>),
         [field]: value,
       },
     });
@@ -193,7 +192,7 @@ export default function NewConsideration() {
     setIsSubmitting(true);
 
     try {
-      const response = await postConsideration(session?.user?.email, formData);
+      await postConsideration(session?.user?.email, formData);
 
       toast.success("Consideration saved successfully!", {
         description: `Consideration for ${formData.basicInfo.name} has been saved.`,
@@ -229,7 +228,11 @@ export default function NewConsideration() {
       </Label>
       <RadioGroup
         id={`${category}.${field}`}
-        value={(formData[category] as any)[field].toString()}
+        value={(
+          formData[
+            category as keyof ConsiderationFormData
+          ] as unknown as Record<string, string | number | boolean | Rating>
+        )[field].toString()}
         onValueChange={(value) =>
           handleChange(category, field, parseInt(value))
         }
@@ -896,7 +899,7 @@ export default function NewConsideration() {
                             htmlFor="parentsMaritalStatus"
                             className="text-slate-700"
                           >
-                            Parents' marital status
+                            Parents&apos; marital status
                           </Label>
                           <Select
                             value={

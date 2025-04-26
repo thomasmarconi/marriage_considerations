@@ -10,7 +10,6 @@ import {
   HeartIcon,
   StarIcon,
   UserIcon,
-  PencilIcon,
   TrashIcon,
   Loader2Icon,
   AlertTriangleIcon,
@@ -35,24 +34,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast, Toaster } from "sonner";
-
-interface ConsiderationRecord {
-  id: number;
-  name: string;
-  age: number | null;
-  date_met: string | null;
-  created_at: string;
-  updated_at: string;
-  overall_notes: string | null;
-  faith_assessment: any;
-  character_assessment: any;
-  children_assessment: any;
-  friendship_assessment: any;
-  family_assessment: any;
-  business_assessment: any;
-  roommate_assessment: any;
-  physical_assessment: any;
-}
+import { ConsiderationRecord } from "@/lib/types/types";
 
 export default function ConsiderationPage() {
   const { data: session } = useSession();
@@ -63,7 +45,7 @@ export default function ConsiderationPage() {
   const [consideration, setConsideration] =
     useState<ConsiderationRecord | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -87,12 +69,9 @@ export default function ConsiderationPage() {
         const data = await response.json();
         setConsideration(data);
         setLoading(false);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error fetching consideration:", err);
-        setError(
-          err.message ||
-            "Failed to load this consideration. Please try again later."
-        );
+
         setLoading(false);
       }
     };
@@ -738,7 +717,7 @@ export default function ConsiderationPage() {
                       ?.parents_marital_status && (
                       <div className="text-sm mb-4">
                         <span className="font-medium">
-                          Parents' Marital Status:
+                          Parents&apos; Marital Status:
                         </span>{" "}
                         {consideration.family_assessment.parents_marital_status}
                       </div>

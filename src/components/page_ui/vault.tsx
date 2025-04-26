@@ -15,24 +15,7 @@ import { HeartIcon, Calendar, Star, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import Image from "next/image";
-
-interface ConsiderationRecord {
-  id: string;
-  name: string;
-  age: number | null;
-  date_met: string | null;
-  created_at: string;
-  updated_at: string;
-  overall_notes: string | null;
-  faith_assessment?: any;
-  character_assessment?: any;
-  children_assessment?: any;
-  friendship_assessment?: any;
-  family_assessment?: any;
-  business_assessment?: any;
-  roommate_assessment?: any;
-  physical_assessment?: any;
-}
+import { ConsiderationRecord } from "@/lib/types/types";
 
 export default function Vault() {
   const { data: session } = useSession();
@@ -91,6 +74,7 @@ export default function Vault() {
       const date = new Date(dateString);
       return format(date, "MMM d, yyyy");
     } catch (e) {
+      console.error("Error parsing date:", e);
       return "Unknown date";
     }
   };
